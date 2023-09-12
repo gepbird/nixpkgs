@@ -15254,6 +15254,8 @@ with pkgs;
 
   zsh-autosuggestions = callPackage ../shells/zsh/zsh-autosuggestions { };
 
+  zsh-notify = callPackage ../shells/zsh/zsh-notify { };
+
   zsh-powerlevel10k = callPackage ../shells/zsh/zsh-powerlevel10k { };
 
   zsh-powerlevel9k = callPackage ../shells/zsh/zsh-powerlevel9k { };

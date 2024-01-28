@@ -1,0 +1,13 @@
+diff --git a/build.zig b/build.zig
+index de32bd2..1cab4e8 100644
+--- a/build.zig
++++ b/build.zig
+@@ -41,7 +41,7 @@ pub fn build(b: *std.build.Builder) void {
+     sandbox_exe.setBuildMode(mode);
+ 
+     sandbox_exe.linkLibC();
+-    sandbox_exe.linkSystemLibrary("libudev");
++    sandbox_exe.linkSystemLibrary("libudev-zero");
+ 
+     addRayLib(sandbox_exe);
+ 

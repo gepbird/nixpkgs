@@ -17,18 +17,18 @@ let
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "n8n";
-  version = "1.10.0";
+  version = "1.15.2";
 
   src = fetchFromGitHub {
     owner = "n8n-io";
     repo = "n8n";
     rev = "n8n@${finalAttrs.version}";
-    hash = "sha256-NQCPDjygcGiUWiXMkX5cX9ELkpm7TdtrSPQ2QEdOHyo=";
+    hash = "sha256-4R9xtpB+wj5WdSVDRpLY562utWG7EnNTeq7/8ly1O/E=";
   };
 
   pnpmDeps = pnpm_8.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-JYgqyqJxTt+ythFXrkTV8KgA/PM5TWofsDpiyXUJt+0=";
+    hash = "sha256-zA3lK+mUVQGCdzO7+3Iq3Lo1Fkf/MLoQzwl0UGDXhl8=";
   };
 
   node-sqlite3 =

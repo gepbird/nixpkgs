@@ -8,6 +8,8 @@
 , libkrb5
 , libmongocrypt
 , postgresql
+, nodePackages
+, python3
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -42,10 +44,18 @@ stdenv.mkDerivation (finalAttrs: {
     libkrb5
     libmongocrypt
     postgresql
+
+    # required to build sqlite3 bindings
+    python3
+    nodePackages.node-gyp
   ];
 
   buildPhase = ''
     runHook preBuild
+
+    pushd node_modules/sqlite3
+    node-gyp rebuild
+    popd
 
     pnpm build
 

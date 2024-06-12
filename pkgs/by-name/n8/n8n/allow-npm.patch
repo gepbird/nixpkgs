@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 3a4af9d630..67ccc449e2 100644
+--- a/package.json
++++ b/package.json
+@@ -9,7 +9,6 @@
+   },
+   "packageManager": "pnpm@8.9.0",
+   "scripts": {
+-    "preinstall": "node scripts/block-npm-install.js",
+     "build": "turbo run build",
+     "build:backend": "pnpm --filter=!@n8n/chat --filter=!n8n-design-system --filter=!n8n-editor-ui build",
+     "build:frontend": "pnpm --filter=@n8n/chat --filter=n8n-design-system --filter=n8n-editor-ui build",

@@ -1,54 +1,77 @@
-{ pkgs, stdenv, lib, nixosTests }:
+{
+  stdenvNoCC,
+  lib,
+  nixosTests,
+  fetchFromGitHub,
+  nodejs,
+  pnpm_8,
+  xcbuild,
+  libkrb5,
+  libmongocrypt,
+  postgresql,
+}:
 
-let
-  nodePackages = import ./node-composition.nix {
-    inherit pkgs;
-    inherit (stdenv.hostPlatform) system;
+stdenvNoCC.mkDerivation (finalAttrs: {
+  pname = "n8n";
+  version = "1.9.3";
+
+  src = fetchFromGitHub {
+    owner = "n8n-io";
+    repo = "n8n";
+    rev = "n8n@${finalAttrs.version}";
+    hash = "sha256-eeIqHKl20irC6/TzfpmbsNQo/p3DjvVecRndxofQEiU=";
   };
-in
-nodePackages.n8n.override {
+
+  pnpmDeps = pnpm_8.fetchDeps {
+    inherit (finalAttrs) pname version src;
+    hash = "sha256-LwPbKuVH1Mq11+Ayd5HiAeNCUTxNWSf0virEl8892QA=";
+  };
+
   nativeBuildInputs = [
-    pkgs.nodePackages.node-pre-gyp
-    pkgs.which
-    pkgs.xcbuild
+    nodejs
+    pnpm_8.configHook
+  ] ++ lib.optional stdenvNoCC.isDarwin [
+    xcbuild
   ];
 
   buildInputs = [
-    pkgs.libkrb5
-    pkgs.libmongocrypt
-    pkgs.postgresql
+    nodejs
+    libkrb5
+    libmongocrypt
+    postgresql
   ];
 
-  preRebuild = lib.optionalString stdenv.isAarch64 ''
-    # Oracle's official package on npm is binary only (WHY?!) and doesn't provide binaries for aarch64.
-    # This can supposedly be fixed by building a custom copy of the module from source, but that's way
-    # too much complexity for a setup no one would ever actually run.
-    #
-    # NB: If you _are_ actually running n8n on Oracle on aarch64, feel free to submit a patch.
-    rm -rf node_modules/oracledb
+  buildPhase = ''
+    runHook preBuild
+    pnpm build
+    runHook postBuild
+  '';
 
-    # This package tries to load a prebuilt binary for a different arch, and it doesn't provide the binary for aarch64.
-    # It is marked as an optional dependency in pnpm-lock.yaml and there are no other references to it n8n.
-    rm -rf node_modules/@sap/hana-client
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/{lib,bin}
+    cp -r {packages,node_modules} $out/lib
+    ln -s $out/lib/packages/cli/bin/n8n $out/bin/n8n
+
+    runHook postInstall
   '';
 
   # makes libmongocrypt bindings not look for static libraries in completely wrong places
   BUILD_TYPE = "dynamic";
 
-  # Disable NAPI_EXPERIMENTAL to allow to build with Node.js≥18.20.0.
-  NIX_CFLAGS_COMPILE = "-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT";
-
-  dontNpmInstall = true;
-
   passthru = {
-    updateScript = ./generate-dependencies.sh;
     tests = nixosTests.n8n;
   };
 
   meta = with lib; {
     description = "Free and source-available fair-code licensed workflow automation tool. Easily automate tasks across different services";
-    maintainers = with maintainers; [ freezeboy k900 ];
+    maintainers = with maintainers; [
+      freezeboy
+      gepbird
+      k900
+    ];
     license = licenses.sustainableUse;
     mainProgram = "n8n";
   };
-}
+})

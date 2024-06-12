@@ -23,10 +23,6 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-csaoKhprwGlhCt0IUbiKHsSIEfFvHWH+btadhVI44yY=";
   };
 
-  patches = [
-    ./allow-npm.patch
-  ];
-
   pnpmDeps = pnpm_8.fetchDeps {
     inherit (finalAttrs) pname version src;
     hash = "sha256-1Id7lwvfWTvHJWiETqpCXGRETxrq7b4KTQGykGDJuy8=";

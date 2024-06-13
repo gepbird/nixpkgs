@@ -4,42 +4,54 @@
   nixosTests,
   fetchFromGitHub,
   nodejs,
-  pnpm_8,
+  pnpm,
+  jq,
+  moreutils,
+  python3,
+  nodePackages,
+  cacert,
   xcbuild,
   libkrb5,
   libmongocrypt,
   postgresql,
-  nodePackages,
-  python3,
-  cacert,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "n8n";
-  version = "1.44.2";
+  version = "1.45.1";
 
   src = fetchFromGitHub {
     owner = "n8n-io";
     repo = "n8n";
     rev = "n8n@${finalAttrs.version}";
-    hash = "sha256-Ah7LD2x8yHfiUqcBn9TyIr05S8bCU7mnY1WM9Oplka8=";
+    hash = "sha256-4Lxygi8LyBFoudNJYmo6wzswmtuv5uBm48eCuJm9hRw=";
   };
 
-  pnpmDeps = pnpm_8.fetchDeps {
+  # this can be removed when pnpm in nixpkgs is new enough for n8n
+  patchPhase = ''
+    runHook prePatch
+
+    jq '.packageManager = "pnpm@${pnpm.version}"' package.json | sponge package.json
+
+    runHook postPatch
+  '';
+
+  pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-KbE1frS4mwl3KLCPprS9wSpoFaGFXvcWcNGc0xQaqIQ=";
+    hash = "sha256-uYyBrTanu1OLb57GqBzl8suysOW79oEmpQUSiw5Zx/c=";
   };
 
   nativeBuildInputs = [
     nodejs
-    pnpm_8.configHook
+    pnpm.configHook
+    jq
+    moreutils # required for sponge
     python3 # required to build sqlite3 bindings
     nodePackages.node-gyp # required to build sqlite3 bindings
     cacert # required for rustls-native-certs (dependency of turbo build tool)
   ] ++ lib.optional stdenv.isDarwin [ xcbuild ];
 
   buildInputs = [
-    nodejs
     libkrb5
     libmongocrypt
     postgresql

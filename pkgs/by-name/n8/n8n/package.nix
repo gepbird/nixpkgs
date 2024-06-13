@@ -14,18 +14,22 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "n8n";
-  version = "1.40.0";
+  version = "1.44.2";
 
   src = fetchFromGitHub {
     owner = "n8n-io";
     repo = "n8n";
     rev = "n8n@${finalAttrs.version}";
-    hash = "sha256-Gidrjnzre01cFGIjUjGZNk89JJOy1UppZMpCxAOTa74=";
+    hash = "sha256-Ah7LD2x8yHfiUqcBn9TyIr05S8bCU7mnY1WM9Oplka8=";
   };
 
+  patches = [
+    ./turbo-downgrade.patch
+  ];
+
   pnpmDeps = pnpm_8.fetchDeps {
-    inherit (finalAttrs) pname version src;
-    hash = "sha256-B/Mjqs/irjR6UDp5lxQnhmL8TQRUUV+41RfgcAsorgU=";
+    inherit (finalAttrs) pname version src patches;
+    hash = "sha256-5sRRg3sXJIUrAxvJ7nB56rh1KyJ3yOuT5BFyXGkNReI=";
   };
 
   nativeBuildInputs = [

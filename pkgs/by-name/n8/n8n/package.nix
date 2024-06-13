@@ -1,15 +1,17 @@
-{ stdenv
-, lib
-, nixosTests
-, fetchFromGitHub
-, nodejs
-, pnpm_8
-, xcbuild
-, libkrb5
-, libmongocrypt
-, postgresql
-, nodePackages
-, python3
+{
+  stdenv,
+  lib,
+  nixosTests,
+  fetchFromGitHub,
+  nodejs,
+  pnpm_8,
+  xcbuild,
+  libkrb5,
+  libmongocrypt,
+  postgresql,
+  nodePackages,
+  python3,
+  cacert,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -31,27 +33,20 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [
     nodejs
     pnpm_8.configHook
-  ] ++ lib.optional stdenv.isDarwin [
-    xcbuild
-  ];
+    python3 # required to build sqlite3 bindings
+    nodePackages.node-gyp # required to build sqlite3 bindings
+    cacert # required for rustls-native-certs (dependency of turbo build tool)
+  ] ++ lib.optional stdenv.isDarwin [ xcbuild ];
 
   buildInputs = [
     nodejs
     libkrb5
     libmongocrypt
     postgresql
-
-    # required to build sqlite3 bindings
-    python3
-    nodePackages.node-gyp
   ];
 
   buildPhase = ''
     runHook preBuild
-
-    # rustls-native-certs tries to load certs from this variable which is set to /no-cert-file.crt
-    # turbo crashes would crash with No such file or directory error
-    unset SSL_CERT_FILE
 
     pushd node_modules/sqlite3
     node-gyp rebuild
@@ -81,6 +76,8 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = with lib; {
     description = "Free and source-available fair-code licensed workflow automation tool. Easily automate tasks across different services";
+    homepage = "https://n8n.io";
+    changelog = "https://github.com/n8n-io/n8n/releases/tag/${finalAttrs.src.rev}";
     maintainers = with maintainers; [
       freezeboy
       gepbird
@@ -88,5 +85,6 @@ stdenv.mkDerivation (finalAttrs: {
     ];
     license = licenses.sustainableUse;
     mainProgram = "n8n";
+    platforms = lib.platforms.unix;
   };
 })

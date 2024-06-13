@@ -23,13 +23,9 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-Ah7LD2x8yHfiUqcBn9TyIr05S8bCU7mnY1WM9Oplka8=";
   };
 
-  patches = [
-    ./turbo-downgrade.patch
-  ];
-
   pnpmDeps = pnpm_8.fetchDeps {
-    inherit (finalAttrs) pname version src patches;
-    hash = "sha256-kiXh7Va9pj0GxW/WWhYgEKSIXUGr2l6+qYwzdjqC7To=";
+    inherit (finalAttrs) pname version src;
+    hash = "sha256-KbE1frS4mwl3KLCPprS9wSpoFaGFXvcWcNGc0xQaqIQ=";
   };
 
   nativeBuildInputs = [
@@ -52,6 +48,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   buildPhase = ''
     runHook preBuild
+
+    # rustls-native-certs tries to load certs from this variable which is set to /no-cert-file.crt
+    # turbo crashes would crash with No such file or directory error
+    unset SSL_CERT_FILE
 
     pushd node_modules/sqlite3
     node-gyp rebuild

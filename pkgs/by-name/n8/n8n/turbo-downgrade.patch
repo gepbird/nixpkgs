@@ -5,7 +5,7 @@ index e1055988ce577..c8bb55dea6333 100644
 @@ -68,3 +68,3 @@
      "tsc-watch": "^6.0.4",
 -    "turbo": "1.13.3",
-+    "turbo": "1.10.12",
++    "turbo": "1.12.2",
      "typescript": "*",
 diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
 index 02f4c6c60d01e..8ecd275c99149 100644
@@ -15,15 +15,15 @@ index 02f4c6c60d01e..8ecd275c99149 100644
        turbo:
 -        specifier: 1.13.3
 -        version: 1.13.3
-+        specifier: 1.10.12
-+        version: 1.10.12
++        specifier: 1.12.2
++        version: 1.12.2
        typescript:
 @@ -23429,54 +23429,54 @@ packages:
  
 -  /turbo-darwin-64@1.13.3:
 -    resolution: {integrity: sha512-glup8Qx1qEFB5jerAnXbS8WrL92OKyMmg5Hnd4PleLljAeYmx+cmmnsmLT7tpaVZIN58EAAwu8wHC6kIIqhbWA==}
-+  /turbo-darwin-64@1.10.12:
-+    resolution: {integrity: sha512-vmDfGVPl5/aFenAbOj3eOx3ePNcWVUyZwYr7taRl0ZBbmv2TzjRiFotO4vrKCiTVnbqjQqAFQWY2ugbqCI1kOQ==}
++  /turbo-darwin-64@1.12.2:
++    resolution: {integrity: sha512-Aq/ePQ5KNx6XGwlZWTVTqpQYfysm1vkwkI6kAYgrX5DjMWn+tUXrSgNx4YNte0F+V4DQ7PtuWX+jRG0h0ZNg0A==}
      cpu: [x64]
      os: [darwin]
      dev: true
@@ -31,8 +31,8 @@ index 02f4c6c60d01e..8ecd275c99149 100644
  
 -  /turbo-darwin-arm64@1.13.3:
 -    resolution: {integrity: sha512-/np2xD+f/+9qY8BVtuOQXRq5f9LehCFxamiQnwdqWm5iZmdjygC5T3uVSYuagVFsZKMvX3ycySwh8dylGTl6lg==}
-+  /turbo-darwin-arm64@1.10.12:
-+    resolution: {integrity: sha512-3JliEESLNX2s7g54SOBqqkqJ7UhcOGkS0ywMr5SNuvF6kWVTbuUq7uBU/sVbGq8RwvK1ONlhPvJne5MUqBCTCQ==}
++  /turbo-darwin-arm64@1.12.2:
++    resolution: {integrity: sha512-wTr+dqkwJo/eXE+4SPTSeNBKyyfQJhI6I9sKVlCSBmtaNEqoGNgdVzgMUdqrg9AIFzLIiKO+zhfskNaSWpVFow==}
      cpu: [arm64]
      os: [darwin]
      dev: true
@@ -40,8 +40,8 @@ index 02f4c6c60d01e..8ecd275c99149 100644
  
 -  /turbo-linux-64@1.13.3:
 -    resolution: {integrity: sha512-G+HGrau54iAnbXLfl+N/PynqpDwi/uDzb6iM9hXEDG+yJnSJxaHMShhOkXYJPk9offm9prH33Khx2scXrYVW1g==}
-+  /turbo-linux-64@1.10.12:
-+    resolution: {integrity: sha512-siYhgeX0DidIfHSgCR95b8xPee9enKSOjCzx7EjTLmPqPaCiVebRYvbOIYdQWRqiaKh9yfhUtFmtMOMScUf1gg==}
++  /turbo-linux-64@1.12.2:
++    resolution: {integrity: sha512-BggBKrLojGarDaa2zBo+kUR3fmjpd6bLA8Unm3Aa2oJw0UvEi3Brd+w9lNsPZHXXQYBUzNUY2gCdxf3RteWb0g==}
      cpu: [x64]
      os: [linux]
      dev: true
@@ -49,8 +49,8 @@ index 02f4c6c60d01e..8ecd275c99149 100644
  
 -  /turbo-linux-arm64@1.13.3:
 -    resolution: {integrity: sha512-qWwEl5VR02NqRyl68/3pwp3c/olZuSp+vwlwrunuoNTm6JXGLG5pTeme4zoHNnk0qn4cCX7DFrOboArlYxv0wQ==}
-+  /turbo-linux-arm64@1.10.12:
-+    resolution: {integrity: sha512-K/ZhvD9l4SslclaMkTiIrnfcACgos79YcAo4kwc8bnMQaKuUeRpM15sxLpZp3xDjDg8EY93vsKyjaOhdFG2UbA==}
++  /turbo-linux-arm64@1.12.2:
++    resolution: {integrity: sha512-v/apSRvVuwYjq1D9MJFsHv2EpGd1S4VoSdZvVfW6FaM06L8CFZa92urNR1svdGYN28YVKwK9Ikc9qudC6t/d5A==}
      cpu: [arm64]
      os: [linux]
      dev: true
@@ -58,8 +58,8 @@ index 02f4c6c60d01e..8ecd275c99149 100644
  
 -  /turbo-windows-64@1.13.3:
 -    resolution: {integrity: sha512-Nudr4bRChfJzBPzEmpVV85VwUYRCGKecwkBFpbp2a4NtrJ3+UP1VZES653ckqCu2FRyRuS0n03v9euMbAvzH+Q==}
-+  /turbo-windows-64@1.10.12:
-+    resolution: {integrity: sha512-7FSgSwvktWDNOqV65l9AbZwcoueAILeE4L7JvjauNASAjjbuzXGCEq5uN8AQU3U5BOFj4TdXrVmO2dX+lLu8Zg==}
++  /turbo-windows-64@1.12.2:
++    resolution: {integrity: sha512-3uDdwXcRGkgopYFdPDpxQiuQjfQ12Fxq0fhj+iGymav0eWA4W4wzYwSdlUp6rT22qOBIzaEsrIspRwx1DsMkNg==}
      cpu: [x64]
      os: [win32]
      dev: true
@@ -67,8 +67,8 @@ index 02f4c6c60d01e..8ecd275c99149 100644
  
 -  /turbo-windows-arm64@1.13.3:
 -    resolution: {integrity: sha512-ouJCgsVLd3icjRLmRvHQDDZnmGzT64GBupM1Y+TjtYn2LVaEBoV6hicFy8x5DUpnqdLy+YpCzRMkWlwhmkX7sQ==}
-+  /turbo-windows-arm64@1.10.12:
-+    resolution: {integrity: sha512-gCNXF52dwom1HLY9ry/cneBPOKTBHhzpqhMylcyvJP0vp9zeMQQkt6yjYv+6QdnmELC92CtKNp2FsNZo+z0pyw==}
++  /turbo-windows-arm64@1.12.2:
++    resolution: {integrity: sha512-zNIHnwtQfJSjFi7movwhPQh2rfrcKZ7Xv609EN1yX0gEp9GxooCUi2yNnBQ8wTqFjioA2M5hZtGJQ0RrKaEm/Q==}
      cpu: [arm64]
      os: [win32]
      dev: true
@@ -76,8 +76,8 @@ index 02f4c6c60d01e..8ecd275c99149 100644
  
 -  /turbo@1.13.3:
 -    resolution: {integrity: sha512-n17HJv4F4CpsYTvKzUJhLbyewbXjq1oLCi90i5tW1TiWDz16ML1eDG7wi5dHaKxzh5efIM56SITnuVbMq5dk4g==}
-+  /turbo@1.10.12:
-+    resolution: {integrity: sha512-WM3+jTfQWnB9W208pmP4oeehZcC6JQNlydb/ZHMRrhmQa+htGhWLCzd6Q9rLe0MwZLPpSPFV2/bN5egCLyoKjQ==}
++  /turbo@1.12.2:
++    resolution: {integrity: sha512-BcoQjBZ+LJCMdjzWhzQflOinUjek28rWXj07aaaAQ8T3Ehs0JFSjIsXOm4qIbo52G4xk3gFVcUtJhh/QRADl7g==}
      hasBin: true
      optionalDependencies:
 -      turbo-darwin-64: 1.13.3
@@ -86,10 +86,10 @@ index 02f4c6c60d01e..8ecd275c99149 100644
 -      turbo-linux-arm64: 1.13.3
 -      turbo-windows-64: 1.13.3
 -      turbo-windows-arm64: 1.13.3
-+      turbo-darwin-64: 1.10.12
-+      turbo-darwin-arm64: 1.10.12
-+      turbo-linux-64: 1.10.12
-+      turbo-linux-arm64: 1.10.12
-+      turbo-windows-64: 1.10.12
-+      turbo-windows-arm64: 1.10.12
++      turbo-darwin-64: 1.12.2
++      turbo-darwin-arm64: 1.12.2
++      turbo-linux-64: 1.12.2
++      turbo-linux-arm64: 1.12.2
++      turbo-windows-64: 1.12.2
++      turbo-windows-arm64: 1.12.2
      dev: true

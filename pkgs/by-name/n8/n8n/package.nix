@@ -42,7 +42,6 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   nativeBuildInputs = [
-    nodejs
     pnpm.configHook
     jq
     moreutils # required for sponge
@@ -52,6 +51,7 @@ stdenv.mkDerivation (finalAttrs: {
   ] ++ lib.optional stdenv.isDarwin [ xcbuild ];
 
   buildInputs = [
+    nodejs
     libkrb5
     libmongocrypt
     postgresql

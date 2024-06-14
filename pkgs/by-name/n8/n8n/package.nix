@@ -14,6 +14,7 @@
   libkrb5,
   libmongocrypt,
   postgresql,
+  makeWrapper,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -48,6 +49,7 @@ stdenv.mkDerivation (finalAttrs: {
     python3 # required to build sqlite3 bindings
     nodePackages.node-gyp # required to build sqlite3 bindings
     cacert # required for rustls-native-certs (dependency of turbo build tool)
+    makeWrapper
   ] ++ lib.optional stdenv.isDarwin [ xcbuild ];
 
   buildInputs = [
@@ -75,6 +77,9 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/{lib,bin}
     cp -r {packages,node_modules} $out/lib
     ln -s $out/lib/packages/cli/bin/n8n $out/bin/n8n
+
+    wrapProgram $out/bin/n8n \
+      --set N8N_RELEASE_TYPE "stable"
 
     runHook postInstall
   '';

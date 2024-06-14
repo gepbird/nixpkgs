@@ -86,6 +86,8 @@ stdenv.mkDerivation (finalAttrs: {
     tests = nixosTests.n8n;
   };
 
+  dontStrip = true;
+
   meta = with lib; {
     description = "Free and source-available fair-code licensed workflow automation tool. Easily automate tasks across different services";
     homepage = "https://n8n.io";

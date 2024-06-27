@@ -39124,8 +39124,6 @@ with pkgs;
 
   hashpump = callPackage ../tools/misc/hashpump { };
 
-  hck = callPackage ../tools/text/hck { };
-
   helm = callPackage ../applications/audio/helm { };
 
   helmfile = callPackage ../applications/networking/cluster/helmfile { };

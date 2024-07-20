@@ -13,15 +13,15 @@
   xdg-utils,
 }:
 
-buildDotnetModule rec {
+buildDotnetModule {
   pname = "beatsabermodmanager";
-  version = "0.0.5";
+  version = "0.0.5-unstable-2024-03-01";
 
   src = fetchFromGitHub {
     owner = "affederaffe";
     repo = "BeatSaberModManager";
-    rev = "v${version}";
-    hash = "sha256-HHWC+MAwJ+AMCuBzSuR7FbW3k+wLri0B9J1DftyfNEU=";
+    rev = "f3588b42f91d01a1680a33ff2692f7cda9a2c8e1";
+    hash = "sha256-U+dYfPu+O3ZcFDT562wk3zNxwzX3AESmseWnz3iRos4=";
     fetchSubmodules = true; # It vendors BSIPA-Linux
   };
 

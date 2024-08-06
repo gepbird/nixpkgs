@@ -6,6 +6,7 @@
 , darwin
 , bottom
 , testers
+, nix-update-script
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -38,8 +39,11 @@ rustPlatform.buildRustPackage rec {
 
   BTM_GENERATE = true;
 
-  passthru.tests.version = testers.testVersion {
-    package = bottom;
+  passthru = {
+    tests.version = testers.testVersion {
+      package = bottom;
+    };
+    updateScript = nix-update-script { };
   };
 
   meta = with lib; {

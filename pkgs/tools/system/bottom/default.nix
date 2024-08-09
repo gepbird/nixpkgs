@@ -56,7 +56,7 @@ rustPlatform.buildRustPackage rec {
     homepage = "https://github.com/ClementTsang/bottom";
     changelog = "https://github.com/ClementTsang/bottom/blob/${version}/CHANGELOG.md";
     license = licenses.mit;
-    maintainers = with maintainers; [ berbiche figsoda ];
+    maintainers = with maintainers; [ berbiche figsoda gepbird ];
     mainProgram = "btm";
   };
 }

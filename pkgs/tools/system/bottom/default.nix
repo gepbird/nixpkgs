@@ -28,7 +28,12 @@ rustPlatform.buildRustPackage rec {
     darwin.apple_sdk_11_0.frameworks.Foundation
   ];
 
-  doCheck = false;
+  doCheck = true;
+
+  preCheck = ''
+    # required for integration tests
+    export HOME=$(mktemp -d)
+  '';
 
   postInstall = ''
     installManPage target/tmp/bottom/manpage/btm.1

@@ -34,6 +34,7 @@ in
   done < <(jq -r '.packages | to_entries | map("\(.key),\(.value.src),\(.value.packageRoot)") | .[]' "$NIX_ATTRS_JSON_FILE")
 
   for package in "''${!packageSources[@]}"; do
+    echo >&2 GEP package: $package
     if [ ! -e "''${packageSources["$package"]}/''${packageRoots["$package"]}/pubspec.yaml" ]; then
       echo >&2 "The package sources for $package are missing. Is the following path inside the source derivation?"
       echo >&2 "Source path: ''${packageSources["$package"]}/''${packageRoots["$package"]}/pubspec.yaml"

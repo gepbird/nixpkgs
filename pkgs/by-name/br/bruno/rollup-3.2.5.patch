@@ -1,0 +1,184 @@
+diff --git a/package-lock.json b/package-lock.json
+index 00fc90c0..953e6897 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -21938,30 +21938,13 @@
+         "@rollup/plugin-commonjs": "^23.0.2",
+         "@rollup/plugin-node-resolve": "^15.0.1",
+         "@rollup/plugin-typescript": "^9.0.2",
+-        "rollup": "3.29.4",
++        "rollup": "3.2.5",
+         "rollup-plugin-dts": "^5.0.0",
+         "rollup-plugin-peer-deps-external": "^2.2.4",
+         "rollup-plugin-terser": "^7.0.2",
+         "typescript": "^4.8.4"
+       }
+     },
+-    "packages/bruno-common/node_modules/rollup": {
+-      "version": "3.29.4",
+-      "dev": true,
+-      "license": "MIT",
+-      "bin": {
+-        "rollup": "dist/bin/rollup"
+-      },
+-      "engines": {
+-        "node": ">=14.18.0",
+-        "npm": ">=8.0.0"
+-      },
+-      "optionalDependencies": {
+-        "fsevents": "~2.3.2"
+-      },
+-      "resolved": "https://registry.npmjs.org/rollup/-/rollup-3.29.4.tgz",
+-      "integrity": "sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw=="
+-    },
+     "packages/bruno-electron": {
+       "name": "bruno",
+       "version": "v1.27.0",
+@@ -22041,7 +22024,7 @@
+         "postcss": "^8.4.18",
+         "react": "18.2.0",
+         "react-dom": "18.2.0",
+-        "rollup": "3.29.4",
++        "rollup": "3.2.5",
+         "rollup-plugin-dts": "^5.0.0",
+         "rollup-plugin-peer-deps-external": "^2.2.4",
+         "rollup-plugin-postcss": "^4.0.2",
+@@ -22053,23 +22036,6 @@
+         "markdown-it": "^13.0.1"
+       }
+     },
+-    "packages/bruno-graphql-docs/node_modules/rollup": {
+-      "version": "3.29.4",
+-      "dev": true,
+-      "license": "MIT",
+-      "bin": {
+-        "rollup": "dist/bin/rollup"
+-      },
+-      "engines": {
+-        "node": ">=14.18.0",
+-        "npm": ">=8.0.0"
+-      },
+-      "optionalDependencies": {
+-        "fsevents": "~2.3.2"
+-      },
+-      "resolved": "https://registry.npmjs.org/rollup/-/rollup-3.29.4.tgz",
+-      "integrity": "sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw=="
+-    },
+     "packages/bruno-js": {
+       "name": "@usebruno/js",
+       "version": "0.12.0",
+@@ -22155,30 +22121,13 @@
+         "@rollup/plugin-commonjs": "^23.0.2",
+         "@rollup/plugin-node-resolve": "^15.0.1",
+         "@rollup/plugin-typescript": "^9.0.2",
+-        "rollup": "3.29.4",
++        "rollup": "3.2.5",
+         "rollup-plugin-dts": "^5.0.0",
+         "rollup-plugin-peer-deps-external": "^2.2.4",
+         "rollup-plugin-terser": "^7.0.2",
+         "typescript": "^4.8.4"
+       }
+     },
+-    "packages/bruno-query/node_modules/rollup": {
+-      "version": "3.29.4",
+-      "dev": true,
+-      "license": "MIT",
+-      "bin": {
+-        "rollup": "dist/bin/rollup"
+-      },
+-      "engines": {
+-        "node": ">=14.18.0",
+-        "npm": ">=8.0.0"
+-      },
+-      "optionalDependencies": {
+-        "fsevents": "~2.3.2"
+-      },
+-      "resolved": "https://registry.npmjs.org/rollup/-/rollup-3.29.4.tgz",
+-      "integrity": "sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw=="
+-    },
+     "packages/bruno-schema": {
+       "name": "@usebruno/schema",
+       "version": "0.7.0",
+@@ -22216,4 +22165,4 @@
+       }
+     }
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/package.json b/package.json
+index 8351e628..67aede11 100644
+--- a/package.json
++++ b/package.json
+@@ -51,7 +51,7 @@
+     "prepare": "husky install"
+   },
+   "overrides": {
+-    "rollup":"3.29.4"
++    "rollup":"3.2.5"
+   },
+   "dependencies": {
+     "json-bigint": "^1.0.0",
+diff --git a/packages/bruno-common/package.json b/packages/bruno-common/package.json
+index 1964f5ec..73eade50 100644
+--- a/packages/bruno-common/package.json
++++ b/packages/bruno-common/package.json
+@@ -22,13 +22,13 @@
+     "@rollup/plugin-commonjs": "^23.0.2",
+     "@rollup/plugin-node-resolve": "^15.0.1",
+     "@rollup/plugin-typescript": "^9.0.2",
+-    "rollup":"3.29.4",
++    "rollup":"3.2.5",
+     "rollup-plugin-dts": "^5.0.0",
+     "rollup-plugin-peer-deps-external": "^2.2.4",
+     "rollup-plugin-terser": "^7.0.2",
+     "typescript": "^4.8.4"
+   },
+   "overrides": {
+-    "rollup":"3.29.4"
++    "rollup":"3.2.5"
+   }
+ }
+diff --git a/packages/bruno-graphql-docs/package.json b/packages/bruno-graphql-docs/package.json
+index ba609393..284e4fae 100644
+--- a/packages/bruno-graphql-docs/package.json
++++ b/packages/bruno-graphql-docs/package.json
+@@ -22,7 +22,7 @@
+     "postcss": "^8.4.18",
+     "react": "18.2.0",
+     "react-dom": "18.2.0",
+-    "rollup":"3.29.4",
++    "rollup":"3.2.5",
+     "rollup-plugin-dts": "^5.0.0",
+     "rollup-plugin-peer-deps-external": "^2.2.4",
+     "rollup-plugin-postcss": "^4.0.2",
+@@ -34,6 +34,6 @@
+     "markdown-it": "^13.0.1"
+   },
+   "overrides": {
+-    "rollup":"3.29.4"
++    "rollup":"3.2.5"
+   }
+ }
+diff --git a/packages/bruno-query/package.json b/packages/bruno-query/package.json
+index b7ff020b..1f8dcc7c 100644
+--- a/packages/bruno-query/package.json
++++ b/packages/bruno-query/package.json
+@@ -21,13 +21,13 @@
+     "@rollup/plugin-commonjs": "^23.0.2",
+     "@rollup/plugin-node-resolve": "^15.0.1",
+     "@rollup/plugin-typescript": "^9.0.2",
+-    "rollup":"3.29.4",
++    "rollup":"3.2.5",
+     "rollup-plugin-dts": "^5.0.0",
+     "rollup-plugin-peer-deps-external": "^2.2.4",
+     "rollup-plugin-terser": "^7.0.2",
+     "typescript": "^4.8.4"
+   },
+   "overrides": {
+-    "rollup":"3.29.4"
++    "rollup":"3.2.5"
+   }
+-}
+\ No newline at end of file
++}

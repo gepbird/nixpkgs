@@ -26,20 +26,24 @@ let
 in
 buildNpmPackage' rec {
   pname = "bruno";
-  version = "1.25.0";
+  version = "1.28.0";
 
   src = fetchFromGitHub {
     owner = "usebruno";
     repo = "bruno";
     rev = "v${version}";
-    hash = "sha256-TXEe0ICrkljxfnvW1wv/e1BB7J6p/KW3JklCvYyjqSs=";
+    hash = "sha256-SLND+eEEMFVHE5XPt2EKkJ+BjENqvUSrWkqnC6ghUBI=";
 
     postFetch = ''
       ${lib.getExe npm-lockfile-fix} $out/package-lock.json
     '';
   };
 
-  npmDepsHash = "sha256-/1/QPKjSgJJDtmUipgbiVR+Buea9cXO+HvICfKVX/2g=";
+  patches = [
+    ./rollup-3.2.5.patch
+  ];
+
+  npmDepsHash = "sha256-43tORkIqG6uyNmkOjViCuBnHOLUNmHO+no/Fdnr5z64=";
   npmFlags = [ "--legacy-peer-deps" ];
 
   nativeBuildInputs =
@@ -81,20 +85,14 @@ buildNpmPackage' rec {
 
   ELECTRON_SKIP_BINARY_DOWNLOAD = 1;
 
-  # remove giflib dependency
-  npmRebuildFlags = [ "--ignore-scripts" ];
-  preBuild = ''
-    substituteInPlace node_modules/canvas/binding.gyp \
-      --replace-fail "'with_gif%': '<!(node ./util/has_lib.js gif)'" "'with_gif%': 'false'"
-    npm rebuild
-  '';
-
   dontNpmBuild = true;
   postBuild = ''
     npm run build --workspace=packages/bruno-common
     npm run build --workspace=packages/bruno-graphql-docs
     npm run build --workspace=packages/bruno-app
     npm run build --workspace=packages/bruno-query
+
+    npm run sandbox:bundle-libraries --workspace=packages/bruno-js
 
     bash scripts/build-electron.sh
 

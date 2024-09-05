@@ -39,11 +39,7 @@ buildNpmPackage' rec {
     '';
   };
 
-  patches = [
-    ./rollup-3.2.5.patch
-  ];
-
-  npmDepsHash = "sha256-43tORkIqG6uyNmkOjViCuBnHOLUNmHO+no/Fdnr5z64=";
+  npmDepsHash = "sha256-RFn7Bbx1xMm4gt++lhPflXjEfTIgmls2TkrJ8Ta2qpI=";
   npmFlags = [ "--legacy-peer-deps" ];
 
   nativeBuildInputs =

@@ -1,7 +1,5 @@
 {
-  lib,
   stdenvNoCC,
-  callPackage,
   fetchurl,
   nodejs,
   withNode ? true,
@@ -20,7 +18,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     rm -r dist/reflink.*node dist/vendor
   '';
 
-  buildInputs = lib.optionals withNode [ nodejs ]; # sus
+  buildInputs = [ nodejs ]; # sus
 
   nativeBuildInputs = [
     nodejs
@@ -37,11 +35,20 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  postFixup = ''
-    cat $out/bin/pnpm
-  '';
+  #postFixup = ''
+  #  cat $out/bin/pnpm
+  #'';
 
-  passthru.fetchDeps = callPackage ./fetch-deps {
-    pnpm_9 = finalAttrs.finalPackage;
+  passthru.fetchDeps = stdenvNoCC.mkDerivation {
+    name = "test-pnpm-deps";
+
+    nativeBuildInputs = [
+      finalAttrs.finalPackage
+    ];
+
+    unpackPhase = ''
+      echo fetch-deps $PATH
+      pnpm --version
+    '';
   };
 })

@@ -5,11 +5,12 @@
   nodejs,
   withNode ? true,
   pnpm_9,
+  callPackage,
   ...
 }:
 
 let
-  #pnpm_9 = stdenvNoCC.mkDerivation (finalAttrs: {
+  #pnpm_9-drv = stdenvNoCC.mkDerivation (finalAttrs: {
   #  pname = "pnpm";
   #  version = "9.15.9";
   #
@@ -22,7 +23,7 @@ let
   #    rm -r dist/reflink.*node dist/vendor
   #  '';
   #
-  #  buildInputs = lib.optionals withNode [ nodejs ]; # this is suspicious
+  #  buildInputs = [ nodejs ]; # this is suspicious
   #
   #  nativeBuildInputs = [
   #    nodejs
@@ -43,6 +44,8 @@ let
   #  '';
   #});
   #
+  #pnpm_9 = callPackage ({...}:pnpm_9-drv) {};
+  #
   #fetchDeps = stdenvNoCC.mkDerivation {
   #  name = "test-pnpm-deps";
   #
@@ -60,9 +63,10 @@ stdenvNoCC.mkDerivation {
   pname = "pnpm-test";
   version = "unstable";
 
-  #pnpmDeps = fetchDeps;
+  pnpmDeps = pnpm_9.fetchDeps;
 
   unpackPhase = ''
+    echo pnpm-test $PATH
     pnpm --version # works
     touch $out;
   '';

@@ -1,16 +1,16 @@
 {
   stdenvNoCC,
-  makeSetupHook,
-  pnpm,
+  pnpm_9,
 }:
 
-{
-  fetchDeps = { ... }:
+let
+  fetchDeps =
+    { ... }:
     stdenvNoCC.mkDerivation {
       name = "test-pnpm-deps";
 
       nativeBuildInputs = [
-        pnpm
+        pnpm_9
       ];
 
       unpackPhase = ''
@@ -18,9 +18,10 @@
         pnpm --version
       '';
     };
+in
+stdenvNoCC.mkDerivation {
+  pname = "readest";
+  version = "unstable";
 
-  configHook = makeSetupHook {
-    name = "pnpm-config-hook";
-    propagatedBuildInputs = [ pnpm ];
-  } ./pnpm-config-hook.sh;
+  pnpmDeps = fetchDeps { };
 }

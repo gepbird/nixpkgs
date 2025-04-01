@@ -4,6 +4,5 @@
 }:
 
 stdenvNoCC.mkDerivation {
-  pnpmDeps = pnpm_9.fetchDeps {
-  };
+  pnpmDeps = pnpm_9.fetchDeps;
 }

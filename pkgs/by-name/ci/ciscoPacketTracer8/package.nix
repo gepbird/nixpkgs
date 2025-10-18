@@ -20,10 +20,13 @@
   nspr,
   nss,
   wayland,
+  wayland-scanner,
+libsForQt5,
   xorg,
   buildFHSEnv,
   copyDesktopItems,
   makeDesktopItem,
+  kdePackages,
   version ? "8.2.2",
   packetTracerSource ? null,
 }:
@@ -40,7 +43,7 @@ let
     "8.2.2" = "CiscoPacketTracer822_amd64_signed.deb";
   };
 
-  unwrapped = stdenvNoCC.mkDerivation {
+  unwrapped = stdenvNoCC.mkDerivation rec {
     name = "ciscoPacketTracer8-unwrapped";
     inherit version;
 
@@ -58,6 +61,7 @@ let
       autoPatchelfHook
       dpkg
       makeWrapper
+      libsForQt5.wrapQtAppsHook
     ];
 
     buildInputs = [
@@ -71,11 +75,19 @@ let
       libpulseaudio
       libudev0-shim
       libxkbcommon
+      libsForQt5.qtbase
+      libsForQt5.qtmultimedia
+      libsForQt5.qtnetworkauth
+      libsForQt5.qtspeech
+      libsForQt5.qtwebsockets
+      libsForQt5.qtwebengine
+      libsForQt5.qtsvg
       libxml2_13
       libxslt
       nspr
       nss
       wayland
+      wayland-scanner
     ]
     ++ (with xorg; [
       libICE
@@ -103,6 +115,8 @@ let
 
       dpkg-deb -x $src $out
       chmod 755 "$out"
+      find $out/opt/pt/bin
+      rm -r $out/opt/pt/bin/libQt*
 
       runHook postUnpack
     '';
@@ -111,7 +125,7 @@ let
       runHook preInstall
 
       makeWrapper "$out/opt/pt/bin/PacketTracer" "$out/bin/packettracer8" \
-        --prefix LD_LIBRARY_PATH : "$out/opt/pt/bin"
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs}
 
       runHook postInstall
     '';
@@ -123,56 +137,56 @@ let
     targetPkgs = _: [ libudev0-shim ];
   };
 in
-
-stdenvNoCC.mkDerivation {
-  pname = "ciscoPacketTracer8";
-  inherit version;
-
-  dontUnpack = true;
-
-  nativeBuildInputs = [
-    copyDesktopItems
-  ];
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-    ln -s ${fhs-env}/bin/${fhs-env.name} $out/bin/packettracer8
-
-    mkdir -p $out/share/icons/hicolor/48x48/apps
-    ln -s ${unwrapped}/opt/pt/art/app.png $out/share/icons/hicolor/48x48/apps/cisco-packet-tracer-8.png
-    ln -s ${unwrapped}/usr/share/icons/gnome/48x48/mimetypes $out/share/icons/hicolor/48x48/mimetypes
-    ln -s ${unwrapped}/usr/share/mime $out/share/mime
-
-    runHook postInstall
-  '';
-
-  desktopItems = [
-    (makeDesktopItem {
-      name = "cisco-pt8.desktop";
-      desktopName = "Cisco Packet Tracer 8";
-      icon = "cisco-packet-tracer-8";
-      exec = "packettracer8 %f";
-      mimeTypes = [
-        "application/x-pkt"
-        "application/x-pka"
-        "application/x-pkz"
-        "application/x-pksz"
-        "application/x-pks"
-      ];
-    })
-  ];
-
-  meta = {
-    description = "Network simulation tool from Cisco";
-    homepage = "https://www.netacad.com/courses/packet-tracer";
-    license = lib.licenses.unfree;
-    mainProgram = "packettracer8";
-    maintainers = with lib.maintainers; [
-      gepbird
-    ];
-    platforms = [ "x86_64-linux" ];
-    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
-  };
-}
+  unwrapped
+#stdenvNoCC.mkDerivation {
+#  pname = "ciscoPacketTracer8";
+#  inherit version;
+#
+#  dontUnpack = true;
+#
+#  nativeBuildInputs = [
+#    copyDesktopItems
+#  ];
+#
+#  installPhase = ''
+#    runHook preInstall
+#
+#    mkdir -p $out/bin
+#    ln -s ${fhs-env}/bin/${fhs-env.name} $out/bin/packettracer8
+#
+#    mkdir -p $out/share/icons/hicolor/48x48/apps
+#    ln -s ${unwrapped}/opt/pt/art/app.png $out/share/icons/hicolor/48x48/apps/cisco-packet-tracer-8.png
+#    ln -s ${unwrapped}/usr/share/icons/gnome/48x48/mimetypes $out/share/icons/hicolor/48x48/mimetypes
+#    ln -s ${unwrapped}/usr/share/mime $out/share/mime
+#
+#    runHook postInstall
+#  '';
+#
+#  desktopItems = [
+#    (makeDesktopItem {
+#      name = "cisco-pt8.desktop";
+#      desktopName = "Cisco Packet Tracer 8";
+#      icon = "cisco-packet-tracer-8";
+#      exec = "packettracer8 %f";
+#      mimeTypes = [
+#        "application/x-pkt"
+#        "application/x-pka"
+#        "application/x-pkz"
+#        "application/x-pksz"
+#        "application/x-pks"
+#      ];
+#    })
+#  ];
+#
+#  meta = {
+#    description = "Network simulation tool from Cisco";
+#    homepage = "https://www.netacad.com/courses/packet-tracer";
+#    license = lib.licenses.unfree;
+#    mainProgram = "packettracer8";
+#    maintainers = with lib.maintainers; [
+#      gepbird
+#    ];
+#    platforms = [ "x86_64-linux" ];
+#    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+#  };
+#}

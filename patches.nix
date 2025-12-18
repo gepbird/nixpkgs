@@ -2,11 +2,12 @@
 with pkgs;
 
 [
-  (fetchpatch2 {
-    name = "fix-mtl-2.3.patch";
-    url = "https://git.ps.informatik.uni-kiel.de/curry/curry-frontend/-/commit/3b26d2826141fee676da07939c2929a049279b70.diff";
-    hash = "sha256-R3XjoUzAwTvDoUEAIIjmrSh2r4RHMqe00RMIs+7jFPY=";
-  })
+  # takes minutes to download
+  #(fetchpatch2 {
+  #  name = "fix-mtl-2.3.patch";
+  #  url = "https://git.ps.informatik.uni-kiel.de/curry/curry-frontend/-/commit/3b26d2826141fee676da07939c2929a049279b70.diff";
+  #  hash = "sha256-R3XjoUzAwTvDoUEAIIjmrSh2r4RHMqe00RMIs+7jFPY=";
+  #})
   (fetchpatch2 {
     name = "nix-2.31-14240-sri-error-message.patch";
     url = "https://github.com/NixOS/nix/commit/56751b1cd2c4700c71c545f2246adf602c97fdf5.patch";
@@ -81,11 +82,12 @@ with pkgs;
     stripLen = 1;
     hash = "sha256-zP9dQOmWs7qrxkBRj70DyQBbRjH78B6tNJVy6ilA1xM=";
   })
-  (fetchpatch2 {
-    name = "find-cuda-toolkit-check-for-language-enablement.patch";
-    url = "https://gitlab.kitware.com/cmake/cmake/-/commit/c5d81a246852e1ad81a3d55fcaff7e6feb779db7.patch";
-    hash = "sha256-oGxzbp+x88+79V+Cyx0l7+nMxX+n3ixzAFKPK26NMI8=";
-  })
+  # returns html due to bot checking instead of a patch
+  #(fetchpatch2 {
+  #  name = "find-cuda-toolkit-check-for-language-enablement.patch";
+  #  url = "https://gitlab.kitware.com/cmake/cmake/-/commit/c5d81a246852e1ad81a3d55fcaff7e6feb779db7.patch";
+  #  hash = "sha256-oGxzbp+x88+79V+Cyx0l7+nMxX+n3ixzAFKPK26NMI8=";
+  #})
   (fetchpatch2 {
     name = "fix_build_failure_due_to_libjxl_version_to_new";
     url = "https://git.ffmpeg.org/gitweb/ffmpeg.git/patch/75b1a555a70c178a9166629e43ec2f6250219eb2";
@@ -101,11 +103,12 @@ with pkgs;
     url = "https://code.ffmpeg.org/FFmpeg/FFmpeg/commit/fa23202cc7baab899894e8d22d82851a84967848.patch";
     hash = "sha256-Ixkf1xzuDGk5t8J/apXKtghY0X9cfqSj/q987zrUuLQ=";
   })
-  (fetchpatch2 {
-    name = "update-arch-supported-by-cuda-12_8.patch";
-    url = "https://gitlab.kitware.com/cmake/cmake/-/commit/a745b6869ee3681e39544d96d936c95c196c7398.patch";
-    hash = "sha256-B6ny6AZFIcyFhsEnzNk7+vJTb36HeguM53sk/LCnjS4=";
-  })
+  # returns html due to bot checking instead of a patch
+  #(fetchpatch2 {
+  #  name = "update-arch-supported-by-cuda-12_8.patch";
+  #  url = "https://gitlab.kitware.com/cmake/cmake/-/commit/a745b6869ee3681e39544d96d936c95c196c7398.patch";
+  #  hash = "sha256-B6ny6AZFIcyFhsEnzNk7+vJTb36HeguM53sk/LCnjS4=";
+  #})
   (fetchpatch2 {
     url = "https://aur.archlinux.org/cgit/aur.git/plain/get-w32-console-maxcols.mingw32.patch?h=mingw-w64-popt&id=63f2cdb0de116362c49681cef20f7a8b4355e85a";
     sha256 = "zv43l1RBqNzT/JG+jQaMVFaFv+ZYPuIiAtKUDzJJBbc=";

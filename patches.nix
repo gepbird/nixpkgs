@@ -1,4 +1,5 @@
-{ fetchpatch2 }:
+{ pkgs ? import ./default.nix {} }:
+with pkgs;
 
 [
   (fetchpatch2 {

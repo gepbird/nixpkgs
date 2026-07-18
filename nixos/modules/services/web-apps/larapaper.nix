@@ -50,6 +50,42 @@ let
         };
       });
 
+  # Applied to larapaper-setup and larapaper-scheduler. Deliberately NOT
+  # applied to larapaper-queue: it's the one unit that actually spawns
+  # headless Chromium (via Browsershot, for every device screen render),
+  # and Chromium's own process/sandboxing model can conflict with several
+  # of these restrictions.
+  hardening = {
+    ProtectSystem = "strict";
+    ReadWritePaths = [ cfg.dataDir ];
+    PrivateTmp = true;
+    PrivateDevices = true;
+    ProtectHome = "tmpfs";
+    ProtectKernelTunables = true;
+    ProtectKernelModules = true;
+    ProtectKernelLogs = true;
+    ProtectControlGroups = true;
+    ProtectClock = true;
+    ProtectHostname = true;
+    ProtectProc = "invisible";
+    ProcSubset = "pid";
+    RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6";
+    RestrictNamespaces = true;
+    LockPersonality = true;
+    RestrictRealtime = true;
+    RestrictSUIDSGID = true;
+    RemoveIPC = true;
+    NoNewPrivileges = true;
+    CapabilityBoundingSet = "";
+    SystemCallFilter = [
+      "@system-service"
+      "~@privileged"
+      "~@resources"
+    ];
+    SystemCallArchitectures = "native";
+    UMask = "0077";
+  };
+
   isSecret = v: isAttrs v && v ? _secret && (isString v._secret || builtins.isPath v._secret);
 
   larapaperEnvVars = lib.generators.toKeyValue {
@@ -350,7 +386,8 @@ in
         "larapaper-scheduler.service"
       ];
       restartTriggers = [ larapaper ];
-      serviceConfig = {
+      unitConfig.RequiresMountsFor = [ cfg.dataDir ];
+      serviceConfig = hardening // {
         Type = "oneshot";
         RemainAfterExit = true;
         User = user;
@@ -378,11 +415,15 @@ in
           set -euo pipefail
           umask 077
 
-          install -T -m 0600 -o ${user} -g ${group} ${larapaperEnv} "${cfg.dataDir}/.env"
+          # No -o/-g here: the service already runs as ${user}:${group}, so
+          # newly created files get that ownership from the kernel without
+          # an explicit chown - which matters under hardening, since
+          # SystemCallFilter's ~@privileged blocks fchownat outright.
+          install -T -m 0600 ${larapaperEnv} "${cfg.dataDir}/.env"
           ${secretReplacements}
 
           if [ ! -e "${cfg.dataDir}/database.sqlite" ]; then
-            install -m 0600 -o ${user} -g ${group} /dev/null "${cfg.dataDir}/database.sqlite"
+            install -m 0600 /dev/null "${cfg.dataDir}/database.sqlite"
           fi
 
           ${lib.getExe artisan} config:clear
@@ -397,7 +438,16 @@ in
       after = [ "larapaper-setup.service" ];
       bindsTo = [ "larapaper-setup.service" ];
       wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
+      # SystemCallFilter is deliberately left unset here: every real
+      # example of a hardened systemd unit that spawns headless Chromium
+      # (nixos/modules/services/{misc/gotenberg,web-apps/karakeep,
+      # monitoring/grafana-image-renderer}.nix) either omits it entirely
+      # or replaces the usual deny-list with a narrow allow-list, since
+      # Chromium's own process/sandbox model can conflict with a
+      # restrictive filter - this bit us on larapaper-setup too (~@privileged
+      # blocked plain `install -o`/`-g`, i.e. fchownat, unrelated to Chromium
+      # at all).
+      serviceConfig = removeAttrs hardening [ "SystemCallFilter" ] // {
         User = user;
         Group = group;
         WorkingDirectory = larapaper;
@@ -411,7 +461,7 @@ in
       description = "larapaper scheduler";
       after = [ "larapaper-setup.service" ];
       bindsTo = [ "larapaper-setup.service" ];
-      serviceConfig = {
+      serviceConfig = hardening // {
         Type = "oneshot";
         User = user;
         Group = group;
@@ -436,18 +486,29 @@ in
           inherit user group;
           mode = "0700";
         };
+        # nginx (as `group`) reaches storage/app/public through the
+        # $out/public/storage symlink, so it needs to traverse - but not
+        # list - every ancestor directory in between.
+        traversableConfig = defaultConfig // {
+          mode = "0710";
+        };
+        # storage/app/public and everything under it is served directly by
+        # nginx, so `group` needs to list and read here.
+        publicConfig = defaultConfig // {
+          mode = "0750";
+        };
       in
       {
-        "${cfg.dataDir}".d = defaultConfig;
+        "${cfg.dataDir}".d = traversableConfig;
         "${cfg.dataDir}/cache".d = defaultConfig;
-        "${cfg.dataDir}/storage".d = defaultConfig;
-        "${cfg.dataDir}/storage/app".d = defaultConfig;
+        "${cfg.dataDir}/storage".d = traversableConfig;
+        "${cfg.dataDir}/storage/app".d = traversableConfig;
         "${cfg.dataDir}/storage/app/private".d = defaultConfig;
-        "${cfg.dataDir}/storage/app/public".d = defaultConfig;
-        "${cfg.dataDir}/storage/app/public/firmwares".d = defaultConfig;
-        "${cfg.dataDir}/storage/app/public/images".d = defaultConfig;
-        "${cfg.dataDir}/storage/app/public/images/default-screens".d = defaultConfig;
-        "${cfg.dataDir}/storage/app/public/images/generated".d = defaultConfig;
+        "${cfg.dataDir}/storage/app/public".d = publicConfig;
+        "${cfg.dataDir}/storage/app/public/firmwares".d = publicConfig;
+        "${cfg.dataDir}/storage/app/public/images".d = publicConfig;
+        "${cfg.dataDir}/storage/app/public/images/default-screens".d = publicConfig;
+        "${cfg.dataDir}/storage/app/public/images/generated".d = publicConfig;
         "${cfg.dataDir}/storage/framework".d = defaultConfig;
         "${cfg.dataDir}/storage/framework/cache".d = defaultConfig;
         "${cfg.dataDir}/storage/framework/cache/data".d = defaultConfig;

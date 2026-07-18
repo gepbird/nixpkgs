@@ -44,10 +44,19 @@ php.buildComposerProject2 (finalAttrs: {
     npm run build
   '';
 
+  # node_modules is intentionally kept: Browsershot's default is to
+  # execute vendor/spatie/browsershot/bin/browser.cjs with
+  # NODE_PATH=$(npm root -g), which resolves to nothing on NixOS, but
+  # Node also always falls back to its normal upward node_modules search
+  # from the script's own directory - so as long as node_modules exists
+  # at the app root, `require('puppeteer')` resolves without any
+  # explicit setNodeModulePath() call (which nothing in this app makes).
+  # This mirrors upstream's own Dockerfile, which copies node_modules
+  # into the final image for the same reason.
   postInstall = ''
     chmod -R u+w $out/share
     mv $out/share/php/larapaper/* $out/
-    rm -R $out/share $out/storage $out/bootstrap/cache $out/node_modules
+    rm -R $out/share $out/storage $out/bootstrap/cache
     ln -s ${dataDir}/storage $out/storage
     ln -s ${dataDir}/cache $out/bootstrap/cache
     ln -s ${dataDir}/storage/app/public $out/public/storage

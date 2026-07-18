@@ -364,7 +364,17 @@ in
                 ${optionalString tlsEnabled "fastcgi_param HTTPS on;"}
               '';
             };
-            "~ \\.(js|css|gif|png|ico|jpg|jpeg|svg|webp)$" = {
+            # Scoped to Vite's own build output on purpose, rather than a
+            # blanket file-extension regex: Livewire and Flux both register
+            # their core JS as dynamic Laravel routes that happen to end in
+            # ".js" (e.g. /flux/flux.js, see vendor/livewire/flux/src/
+            # AssetManager.php), not real files under public/. A regex
+            # location has no PHP-FPM fallback and would 404 those routes
+            # outright, silently breaking every Alpine/Flux-driven UI
+            # element (dropdowns, etc.) while everything server-rendered
+            # keeps working - which is exactly what happened before this
+            # was scoped down.
+            "^~ /build/" = {
               extraConfig = "expires 365d;";
             };
           };

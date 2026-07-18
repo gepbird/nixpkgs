@@ -48,6 +48,15 @@
             "curl --fail http://localhost/storage/probe.txt | grep -q hello-from-dataDir"
         )
 
+    with subtest("Flux/Livewire's dynamically-routed JS isn't shadowed by static asset caching"):
+        # Flux and Livewire both serve their core JS via a Laravel route
+        # (e.g. /flux/flux.js), not a real file under public/. A static
+        # asset location matching by file extension alone would 404 this
+        # instead of falling through to PHP-FPM, silently breaking every
+        # Alpine/Flux-driven UI element while server-rendered HTML/CSS
+        # keeps working fine.
+        larapaper.succeed("curl --fail --silent --show-error --output /dev/null http://localhost/flux/flux.js")
+
     with subtest("Browsershot/Chromium rendering actually works"):
         # Exercises the real rendering pipeline (Browsershot -> Node ->
         # Puppeteer -> Chromium) against already-seeded device models,

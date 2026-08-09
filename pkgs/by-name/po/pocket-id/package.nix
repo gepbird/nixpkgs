@@ -42,7 +42,9 @@ buildGo127Module (finalAttrs: {
   ];
 
   # required for TestIsURLPrivate
-  __darwinAllowLocalNetworking = finalAttrs.finalPackage.doCheck;
+  # many test time out on darwin when waiting for 127.0.0.1 even with `__darwinAllowLocalNetworking = true`
+  # caused by `quic.DialAddr` of `quic-go`
+  doCheck = !stdenvNoCC.hostPlatform.isDarwin;
 
   preFixup = ''
     mv $out/bin/cmd $out/bin/pocket-id

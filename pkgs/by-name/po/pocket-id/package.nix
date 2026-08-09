@@ -25,6 +25,14 @@ buildGo127Module (finalAttrs: {
 
   sourceRoot = "${finalAttrs.src.name}/backend";
 
+  # doesn't change go.mod or go.sum, so vendorHash is unaffected
+  patches = [
+    # every test using the Francis actor host times out on darwin, because its
+    # readiness probe dials QUIC from a wildcard [::] socket, which the sandbox
+    # doesn't allow to reach 127.0.0.1
+    ./actor-host-probe-loopback-socket.patch
+  ];
+
   vendorHash = "sha256-yE4mbS9bhs7Iyq2wa2fuHX8J9Xj/XL6M6bS/2CPRNn0=";
 
   env.CGO_ENABLED = 0;

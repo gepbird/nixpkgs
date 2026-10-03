@@ -1,23 +1,23 @@
 {
   lib,
   fetchFromGitHub,
-  buildGoModule,
+  buildGo127Module,
   buildNpmPackage,
   nixosTests,
   testers,
 }:
 
-buildGoModule (finalAttrs: {
+buildGo127Module (finalAttrs: {
   pname = "adguardhome";
-  version = "0.107.79";
+  version = "1.0.0-b.1";
   src = fetchFromGitHub {
     owner = "AdguardTeam";
     repo = "AdGuardHome";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-2naPxr+ejMKjUz4SWP45XJ6sRd+Ju09+3kjufhRY1Xw=";
+    hash = "sha256-Ms4VFeBCz5Bm3vY7uAJLyAduts2ygSteGbO3JEdQJX8=";
   };
 
-  vendorHash = "sha256-I0Zqo3s6s8UJ3IJJng32/27WUo/6zPy+jxj98Vh/ja8=";
+  vendorHash = "sha256-f0HILmUL3PXOO19V9f3bJJDQUSzaltXUpkv71aY4wIs=";
 
   dashboard = buildNpmPackage {
     inherit (finalAttrs) src version;
